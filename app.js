@@ -31,6 +31,6 @@ app.use("/", require("./routes/home"));
 app.use("/api", require("./routes/api"));
 
 // Start the server
-var server = app.listen(config.APP_PORT, function () {
+var server = app.listen(config.APP_PORT, config.APP_IP, function () {
     console.log("Listening on port %d", server.address().port);
 });
