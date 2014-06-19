@@ -37,7 +37,7 @@ router.post("/apps/create", function (req, res) {
             if (error) {
                 res.json(500, "Oh, noes... couldn't _insert_ it!");
             } else {
-                res.json(200, {message: appId});
+                res.json(200, {appId: appId});
             }
         });
     } else {
