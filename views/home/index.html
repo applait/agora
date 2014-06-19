@@ -1,0 +1,36 @@
+{% extends "layout/default.html" %}
+
+{% block content %}
+
+<h1>Host your own Firefox OS app</h1>
+
+<p>We will host your app temporarily for 7 days for you to test drive your app on any Firefox OS
+    device.</p>
+
+<form id="request-form" class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="sr-only" for="item-app-name">App Name</label>
+        <input type="text" class="" id="item-app-name" placeholder="App Name" name="name">
+    </div>
+    <div class="form-group">
+        <label class="sr-only" for="item-app-description">App Description</label>
+        <input type="text" class="" id="item-app-description" placeholder="Short app description" name="description">
+    </div>
+    <div class="form-group">
+        <label class="sr-only" for="item-webapp-url">Webapp URL</label>
+        <input type="text" class="" id="item-url" placeholder="Webapp URL" name="url">
+    </div>
+    <div class="form-group">
+        <input id="request-submit" class="crossfade" type="submit" value="Create App">
+    </div>
+</form>
+
+<div id="submission-toast" class="alert alert-warning">
+    Got it... we'll get back to you ASAP. Do you wanna <b class="request-again">request another</b> app?
+</div>
+<div id="failure-toast" class="alert alert-danger">
+    Life is too short to fire blanks... Please <b class="request-again">fill-up the fields</b>!
+</div>
+
+
+{% endblock %}
