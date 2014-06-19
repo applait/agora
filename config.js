@@ -8,7 +8,7 @@ var config = {
     DB_PORT       : process.env.OPENSHIFT_MONGODB_DB_PORT || "27017",
     DB_USER       : process.env.OPENSHIFT_MONGODB_DB_USERNAME || "",
     DB_PASS       : process.env.OPENSHIFT_MONGODB_DB_PASSWORD || "",
-    DB_NAME       : "agora",
+    DB_NAME       : "instanceof",
 
     endpoint : function (str) {
         return config.APIBASE + str.replace(/\{user\}/, config.REPO_USERNAME).replace(/\{repo\}/, config.REPO_SLUG);
