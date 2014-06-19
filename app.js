@@ -26,7 +26,6 @@ app.use(session({ secret: "potato" }));
 
 
 // --- Begin routes ---- //
-
 app.use("/", require("./routes/home"));
 app.use("/api", require("./routes/api"));
 
