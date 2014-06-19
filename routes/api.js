@@ -35,7 +35,7 @@ router.post("/apps/create", function (req, res) {
                 },
                 default_locale: "en"
             },
-            id: appId
+            appId: appId
         }, function (error) {
             if (error) {
                 res.json(500, "Oh, noes... couldn't _insert_ it!");
@@ -47,6 +47,16 @@ router.post("/apps/create", function (req, res) {
         res.json(500, {message: "Invalid data provided."});
     }
 
+});
+
+router.get("/apps/:id", function (req, res) {
+    apps.find({appId: req.params.id}, function (err, doc) {
+        if (err) {
+            res.json(500, { message: "App not found..."});
+        } else {
+            res.json(200, doc);
+        }
+    });
 });
 
 module.exports = router;
