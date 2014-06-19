@@ -38,8 +38,7 @@
     "passport": "0.2.0",
     "monk": "0.9.0",
     "request": "2.36.0",
-    "nunjucks": "1.0.5",
-    "shortid": "2.0.0"
+    "nunjucks": "1.0.5"
   },
 
   "devDependencies": {},

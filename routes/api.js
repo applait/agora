@@ -1,5 +1,5 @@
 var express = require("express"),
-    uuid = require("shortid"),
+    uuid = require("crypto"),
     config = require("../config"),
     db = require("../db");
 
@@ -10,7 +10,10 @@ router.post("/apps/create", function (req, res) {
     var appName = req.body && req.body.name,
         appDesc = req.body && req.body.description,
         appUrl  = req.body && req.body.url.replace(/\/$/, ""),
-        appId   = uuid.generate();
+        appId   = uuid.createHash("sha1")
+                      .update(Date() + appUrl)
+                      .digest('hex')
+                      .slice(0,6);
 
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'POST');
