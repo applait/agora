@@ -1,7 +1,7 @@
 // Configuration parapmeters
 var endPoint = "/api/apps/create",
     requestbase = "http://request-applait.rhcloud.com",
-    appId`,
+    appId,
     appurl,
     manifesturl;
 
@@ -29,7 +29,7 @@ var youGoBoy = function (appname, appdescription, url) {
     }).done(function (data) {
         appId = data.appId;
         appurl = "/apps/" + appId;
-        manifesturl = "/api/apps/" + appId;
+        manifesturl = "/api/apps/" + appId + "?prettyprint=true";
         $("#submission-toast").html($("#submission-toast").html()
                 .replace(/\{appurl\}/, appurl)
                 .replace(/\{manifesturl\}/, manifesturl))

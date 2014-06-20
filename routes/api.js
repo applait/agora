@@ -20,29 +20,40 @@ router.post("/apps/create", function (req, res) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
     if (appName && appUrl && appDesc) {
-        apps.insert({
-            manifest: {
-                name: appName,
-                description: appDesc,
-                launch_path: appUrl,
-                icons: {
-                   "60": "/assets/img/icon_60.png",
-                   "128": "/assets/img/icon_128.png"
-                },
-                developer: {
-                name: "Applait",
-                    url: "http://applait.io/"
-                },
-                default_locale: "en"
-            },
-            appId: appId
-        }, function (error) {
-            if (error) {
-                res.json(500, "Oh, noes... couldn't _insert_ it!");
+        apps.findOne({ appId: appId}).on("success", function (doc) {
+            if (doc) {
+                appId = appId.split('').slice(0, -1)
+                    .push(String.fromCharCode(Math.floor((Math.random() * 6) + 97))).join('');
             } else {
-                res.json(200, {appId: appId});
+
+                apps.insert({
+                    manifest: {
+                        name: appName,
+                        description: appDesc,
+                        launch_path: appUrl,
+                        icons: {
+                           "60": "/assets/img/icon_60.png",
+                           "128": "/assets/img/icon_128.png"
+                        },
+                        developer: {
+                        name: "Applait",
+                            url: "http://applait.io/"
+                        },
+                        default_locale: "en"
+                    },
+                    appId: appId
+                }, function (error) {
+                    if (error) {
+                        res.json(500, "Oh, noes... couldn't _insert_ it!");
+                    } else {
+                        res.json(200, {appId: appId});
+                    }
+                });
+
             }
+
         });
+
     } else {
         res.json(500, {message: "Invalid data provided."});
     }
@@ -50,11 +61,15 @@ router.post("/apps/create", function (req, res) {
 });
 
 router.get("/apps/:id", function (req, res) {
-    apps.find({appId: req.params.id}, function (err, doc) {
-        if (err) {
-            res.json(500, { message: "App not found..."});
+    apps.findOne({appId: req.params.id}, function (err, doc) {
+        if (err || !doc) {
+            res.json(404, { message: "App not found..."});
         } else {
-            res.json(200, doc);
+            if (req.query && req.query.prettyprint) {
+                res.end(JSON.stringify(doc.manifest, 0, 4), "utf-8");
+            } else {
+                res.json(200, doc.manifest);
+            }
         }
     });
 });
