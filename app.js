@@ -22,8 +22,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser("banana"));
 app.use("/assets", express.static(path.join(__dirname, 'assets')));
+app.use("/", express.static(path.join(__dirname, 'static')));
 app.use(session({ secret: "potato" }));
-
 
 // --- Begin routes ---- //
 app.use("/", require("./routes/home"));

@@ -29,7 +29,7 @@ router.post("/apps/create", function (req, res) {
                     manifest: {
                         name: appName,
                         description: appDesc,
-                        launch_path: appUrl,
+                        launch_path: "/webapp.html?" + appUrl,
                         icons: {
                            "60": "/assets/img/icon_60.png",
                            "128": "/assets/img/icon_128.png"
