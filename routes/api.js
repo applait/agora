@@ -1,6 +1,5 @@
 var express = require("express"),
     uuid = require("crypto"),
-    config = require("../config"),
     db = require("../db");
 
 var router = express.Router(),
