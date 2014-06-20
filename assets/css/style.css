@@ -133,7 +133,7 @@ input[type="text"] { color: #666; }
 #offer { background-color: #5A5C63; }
 #about { background-color: #4D4E53; }
 #contact { background-color: #3D3E42; }
-#request { background: #CD6723; }
+#create { background: #CD6723; }
 
 .show { opacity: 1; }
 .crossfade {
@@ -143,7 +143,7 @@ input[type="text"] { color: #666; }
 
 .not-form-group { width: 100%; }
 
-#request-submit {
+.action-button {
     color: #804000;
     padding: 8px 16px;
     background-color: #FF9500;
@@ -156,6 +156,9 @@ input[type="text"] { color: #666; }
     font-size: 1.5rem;
 }
 
+#submission-toast p, #submission-toast form {
+    margin-bottom: 15px;
+}
 .request-again {
     cursor: pointer;
     text-decoration: underline;
@@ -205,9 +208,9 @@ a:focus {
     background: rgba(255,255,255,.1);
 }
 
-#request-submit:hover,
-#request-submit:focus,
-#request-submit:active {
+.action-button:hover,
+.action-button:focus,
+.action-button:active {
     color: #eee;
     background-color: #E66000;
 }
@@ -238,3 +241,8 @@ a:focus {
     }
     #request-form .not-form-group { width: 25%; }
 }
+
+.nobr {
+    white-space: nowrap;
+}
+

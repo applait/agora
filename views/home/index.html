@@ -7,26 +7,42 @@
 <p>We will host your app temporarily for 7 days for you to test drive your app on any Firefox OS
     device.</p>
 
-<form id="request-form" class="form-horizontal" role="form">
-    <div class="form-group">
-        <label class="sr-only" for="item-app-name">App Name</label>
-        <input type="text" class="" id="item-app-name" placeholder="App Name" name="name">
-    </div>
-    <div class="form-group">
-        <label class="sr-only" for="item-app-description">App Description</label>
-        <input type="text" class="" id="item-app-description" placeholder="Short app description" name="description">
-    </div>
-    <div class="form-group">
-        <label class="sr-only" for="item-webapp-url">Webapp URL</label>
-        <input type="text" class="" id="item-url" placeholder="Webapp URL" name="url">
-    </div>
-    <div class="form-group">
-        <input id="request-submit" class="crossfade" type="submit" value="Create App">
+<form id="generator-form" class="form-horizontal" role="form">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="form-group">
+            <label class="sr-only" for="item-app-name">App Name</label>
+            <input type="text" class="" id="item-app-name" placeholder="App Name" name="name"
+                required>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="item-app-description">App Description</label>
+            <input type="text" class="" id="item-app-description" placeholder="Short app description" name="description" required>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="item-webapp-url">Webapp URL</label>
+            <input type="text" class="" id="item-url" placeholder="Webapp URL" name="url" required>
+        </div>
+        <div class="form-group">
+            <input id="generator-submit" class="action-button crossfade" type="submit" value="Create App">
+        </div>
     </div>
 </form>
-
 <div id="submission-toast" class="alert alert-warning">
-    Got it... we'll get back to you ASAP. Do you wanna <b class="request-again">request another</b> app?
+    <p>Yay! We have created an <a href="{appurl}">app for you</a>. You can test drive
+    this app on any Firefox OS device for the next 7 days.</p>
+    <p>If you find that your app needs more polish, count on us to help you!</p>
+    <form id="request-form" class="form-inline" role="form">
+        <div class="form-group">
+            <label class="sr-only" for="item-email">Email</label>
+            <input type="text" id="item-email" placeholder="Email" name="email" required>
+        </div>
+        <div class="form-group">
+            <input id="request-submit" class="action-button" type="submit" value="Get in touch!">
+        </div>
+    </form>
+    <div id="request-success" class="hidden"><p>We've got it! <em>Thanks!</em></p></div>
+    <p class="small">Alternatively, you can download your <a href="{manifesturl}">app's <em>manifest</em></a>,
+         and handcraft it</a>.</p>
 </div>
 <div id="failure-toast" class="alert alert-danger">
     Life is too short to fire blanks... Please <b class="request-again">fill-up the fields</b>!
