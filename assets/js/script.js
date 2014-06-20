@@ -1,7 +1,7 @@
 // Configuration parapmeters
 var endPoint = "/api/apps/create",
     requestbase = "http://request-applait.rhcloud.com",
-    appid,
+    appId`,
     appurl,
     manifesturl;
 
