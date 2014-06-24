@@ -28,6 +28,7 @@ app.use(session({ secret: "potato" }));
 // --- Begin routes ---- //
 app.use("/", require("./routes/home"));
 app.use("/api", require("./routes/api"));
+app.use("/apps", require("./routes/apps"));
 
 // Start the server
 var server = app.listen(config.APP_PORT, config.APP_IP, function () {

@@ -67,6 +67,7 @@ router.get("/apps/:id", function (req, res) {
             if (req.query && req.query.prettyprint) {
                 res.end(JSON.stringify(doc.manifest, 0, 4), "utf-8");
             } else {
+                res.setHeader("Content-Type", "application/x-web-app-manifest+json");
                 res.json(200, doc.manifest);
             }
         }

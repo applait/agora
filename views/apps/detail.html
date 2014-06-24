@@ -1,0 +1,35 @@
+{% extends "layout/default.html" %}
+
+{% block content %}
+
+<div class="row appDetails">
+	<img src="{{ manifest.icons['128'] }}" class="col-md-2 col-md-offset-2" />
+	<div class="col-lg-4">
+		<h1>{{ manifest.name }}</h1>
+		<p>{{ manifest.description }}</p>
+		<button id="installButton" disabled="disabled" class="btn btn-default btn-block">Install</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var apps = navigator.apps || navigator.mozApps;
+	if (apps) {
+		$("#installButton").removeAttr("disabled")
+		.click(function (event) {
+			var manifest = location.origin + "/api/apps/{{ appId }}",
+				check = apps.checkInstalled(manifest);
+				console.log(manifest);
+
+			check.onsuccess = function (event) {
+				if (!check.result) {
+					var install = apps.install(manifest);
+					install.onerror = function () {
+						alert('Installation Failed. Error: ' + this.error.name);
+					}
+				}
+			}
+		})
+	}
+</script>
+
+{% endblock %}

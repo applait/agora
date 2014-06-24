@@ -159,10 +159,15 @@ input[type="text"] { color: #666; }
 #submission-toast p, #submission-toast form {
     margin-bottom: 15px;
 }
+
 .request-again {
     cursor: pointer;
     text-decoration: underline;
 }
+
+.nobr { white-space: nowrap; }
+
+.appDetails h1 { margin-bottom: 16px; }
 
 /* 2. Pseudoclass */
 ::-moz-selection {
@@ -241,8 +246,3 @@ a:focus {
     }
     #request-form .not-form-group { width: 25%; }
 }
-
-.nobr {
-    white-space: nowrap;
-}
-
