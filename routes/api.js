@@ -62,7 +62,7 @@ router.post("/apps/create", function (req, res) {
 router.get("/apps/:id", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
         if (err || !doc) {
-            res.json(404, { message: "App not found..."});
+            res.json(404, { message: "App not found...", err: err});
         } else {
             if (req.query && req.query.prettyprint) {
                 res.end(JSON.stringify(doc.manifest, 0, 4), "utf-8");
