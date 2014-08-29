@@ -40,7 +40,8 @@ router.post("/apps/create", function (req, res) {
                         },
                         default_locale: "en"
                     },
-                    appId: appId
+                    appId: appId,
+                    type: "hosted"
                 }, function (error) {
                     if (error) {
                         res.json(500, "Oh, noes... couldn't _insert_ it!");
@@ -53,6 +54,50 @@ router.post("/apps/create", function (req, res) {
 
         });
 
+    } else {
+        res.json(500, {message: "Invalid data provided."});
+    }
+
+});
+
+
+/**
+ * Endpoint for creating packaged apps
+ */
+router.post("/apps/createpackaged", function (req, res) {
+
+    var appName = req.body && req.body.name,
+        appDesc = req.body && req.body.description,
+        appPackage = req.files,
+        appId   = uuid.createHash("sha1")
+                      .update(Date() + appName)
+                      .digest('hex')
+                      .slice(0,6);
+
+    // Check if appName, appDesc and proper file is provided
+    if (appName && appDesc && appPackage && appPackage.packagefile) {
+        // Check if provided file is zip file
+        if (appPackage.packagefile.mimetype === "application/zip" &&
+            appPackage.packagefile.extension === "zip") {
+            // File has now successfully uploaded. Insert package checks here.
+            apps.insert({
+                    manifest: {
+                        name: appName,
+                        description: appDesc,
+                    },
+                    appId: appId,
+                    type: "packaged",
+                    packagefile: appPackage.packagefile.name
+                }, function (error) {
+                    if (error) {
+                        res.json(500, "Oh, noes... couldn't _insert_ it!");
+                    } else {
+                        res.json(200, {appId: appId});
+                    }
+                });
+        } else {
+            res.json(403, {message: "Only .zip files can be uploaded as packages."});
+        }
     } else {
         res.json(500, {message: "Invalid data provided."});
     }

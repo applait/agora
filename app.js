@@ -6,7 +6,8 @@ var express = require("express"),
     session = require("express-session"),
     cookieParser = require("cookie-parser"),
     config = require("./config"),
-    nunjucks = require("nunjucks");
+    nunjucks = require("nunjucks"),
+    multer = require("multer");
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(cookieParser("banana"));
 app.use("/assets", express.static(path.join(__dirname, 'assets')));
 app.use("/", express.static(path.join(__dirname, 'static')));
 app.use(session({ secret: "potato" }));
+app.use(multer({ "dest": "./storage/" }));
 
 // --- Begin routes ---- //
 app.use("/", require("./routes/home"));
