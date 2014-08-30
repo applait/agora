@@ -58,9 +58,9 @@ router.post("/apps/create", function (req, res) {
                     timestamp: Math.round(+new Date()/1000)
                 }, function (error) {
                     if (error) {
-                        res.json(500, "Oh, noes... couldn't _insert_ it!");
+                        res.status(500).json("Oh, noes... couldn't _insert_ it!");
                     } else {
-                        res.json(200, {appId: appId});
+                        res.status(200).json({ appId: appId });
                     }
                 });
 
@@ -69,7 +69,7 @@ router.post("/apps/create", function (req, res) {
         });
 
     } else {
-        res.json(500, {message: "Invalid data provided."});
+        res.status(500).json({message: "Invalid data provided."});
     }
 
 });
@@ -109,7 +109,8 @@ router.post("/apps/createpackaged", function (req, res) {
                             url: "http://applait.io/"
                         },
                         default_locale: "en",
-                        package_path: "{SITE_URL}/api/apps/" + appId + "/package.zip"
+                        package_path: "{SITE_URL}/api/apps/" + appId + "/package.zip",
+                        size: appPackage.packagefile.size
                     },
                     appId: appId,
                     type: "packaged",
@@ -117,16 +118,16 @@ router.post("/apps/createpackaged", function (req, res) {
                     timestamp: Math.round(+new Date()/1000)
                 }, function (error) {
                     if (error) {
-                        res.json(500, "Oh, noes... couldn't _insert_ it!");
+                        res.status(500).json("Oh, noes... couldn't _insert_ it!");
                     } else {
-                        res.json(200, {appId: appId});
+                        res.status(200).json({ appId: appId });
                     }
                 });
         } else {
-            res.json(403, {message: "Only .zip files can be uploaded as packages."});
+            res.status(403).json({message: "Only .zip files can be uploaded as packages."});
         }
     } else {
-        res.json(500, {message: "Invalid data provided."});
+        res.status(500).json({message: "Invalid data provided."});
     }
 
 });
@@ -139,11 +140,11 @@ router.get("/apps/:id/manifest.webapp", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
 
         if (err || !doc) {
-            res.json(404, { message: "App not found...", err: err});
+            res.status(404).json({ message: "App not found...", err: err});
         } else {
             res.setHeader("Content-Type", "application/x-web-app-manifest+json");
             doc.manifest = manifest_prepare(doc.manifest);
-            res.json(200, doc.manifest);
+            res.status(200).json(doc.manifest);
         }
     });
 });
@@ -155,13 +156,12 @@ router.get("/apps/:id/manifest.webapp", function (req, res) {
 router.get("/apps/:id/package.zip", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
         if (err || !doc) {
-            res.json(404, { message: "App not found...", err: err});
+            res.status(404).json({ message: "App not found...", err: err});
         } else {
             if (doc.type && (doc.type === "packaged")) {
-                res.download(agora.config.PACKAGE_STORAGE_PATH + "/" + doc.packagefile,
-                             "package.zip");
+                res.sendFile(agora.config.PACKAGE_STORAGE_PATH + "/" + doc.packagefile);
             } else {
-                res.json(404, { message: "App is not a packaged app."});
+                res.status(404).json({ message: "App is not a packaged app."});
             }
         }
     });
@@ -173,7 +173,7 @@ router.get("/apps/:id/package.zip", function (req, res) {
 router.get("/apps/:id", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
         if (err || !doc) {
-            res.json(404, { message: "App not found...", err: err});
+            res.status(404).json({ message: "App not found...", err: err});
         } else {
             doc.manifest = manifest_prepare(doc.manifest);
             res.end(JSON.stringify(doc.manifest, 0, 4), "utf-8");
