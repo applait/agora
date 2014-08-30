@@ -5,6 +5,9 @@ var express = require("express"),
 var router = express.Router(),
     apps = db.get("apps");
 
+/**
+ * Endpoint for creating hosted app
+ */
 router.post("/apps/create", function (req, res) {
     var appName = req.body && req.body.name,
         appDesc = req.body && req.body.description,
@@ -41,7 +44,8 @@ router.post("/apps/create", function (req, res) {
                         default_locale: "en"
                     },
                     appId: appId,
-                    type: "hosted"
+                    type: "hosted",
+                    timestamp: Math.round(+new Date()/1000)
                 }, function (error) {
                     if (error) {
                         res.json(500, "Oh, noes... couldn't _insert_ it!");
@@ -63,6 +67,8 @@ router.post("/apps/create", function (req, res) {
 
 /**
  * Endpoint for creating packaged apps
+ *
+ * @TODO: Add package checks
  */
 router.post("/apps/createpackaged", function (req, res) {
 
@@ -87,7 +93,8 @@ router.post("/apps/createpackaged", function (req, res) {
                     },
                     appId: appId,
                     type: "packaged",
-                    packagefile: appPackage.packagefile.name
+                    packagefile: appPackage.packagefile.name,
+                    timestamp: Math.round(+new Date()/1000)
                 }, function (error) {
                     if (error) {
                         res.json(500, "Oh, noes... couldn't _insert_ it!");
@@ -104,17 +111,38 @@ router.post("/apps/createpackaged", function (req, res) {
 
 });
 
-router.get("/apps/:id", function (req, res) {
+
+/**
+ * Output only the manifest of an app as "application/x-web-app-manifest+json" content-type
+ */
+router.get("/apps/:id/manifest", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
+
         if (err || !doc) {
             res.json(404, { message: "App not found...", err: err});
         } else {
-            if (req.query && req.query.prettyprint) {
-                res.end(JSON.stringify(doc.manifest, 0, 4), "utf-8");
-            } else {
-                res.setHeader("Content-Type", "application/x-web-app-manifest+json");
-                res.json(200, doc.manifest);
-            }
+            res.setHeader("Content-Type", "application/x-web-app-manifest+json");
+            res.json(200, doc.manifest);
+        }
+    });
+});
+
+/**
+ * Output vital (non-sensitive) information of an app as plain JSON
+ */
+router.get("/apps/:id", function (req, res) {
+    apps.findOne({appId: req.params.id}, function (err, doc) {
+        var output;
+
+        if (err || !doc) {
+            res.json(404, { message: "App not found...", err: err});
+        } else {
+            output = {
+                manifest: doc.manifest,
+                type: doc.type,
+                appId: doc.appId
+            };
+            res.end(JSON.stringify(output, 0, 4), "utf-8");
         }
     });
 });

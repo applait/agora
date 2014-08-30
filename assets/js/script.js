@@ -30,7 +30,7 @@ $(document).ready( function ($) {
         }).done(function (data) {
             appId = data.appId;
             appurl = "/apps/" + appId;
-            manifesturl = "/api/apps/" + appId + "?prettyprint=true";
+            manifesturl = "/api/apps/" + appId + "/manifest";
             $("#submission-toast").html($("#submission-toast").html()
                     .replace(/\{appurl\}/, appurl)
                     .replace(/\{manifesturl\}/, manifesturl))

@@ -16,7 +16,7 @@
 	if (apps) {
 		$("#installButton").removeAttr("disabled")
 		.click(function (event) {
-			var manifest = location.origin + "/api/apps/{{ appId }}",
+			var manifest = location.origin + "/api/apps/{{ appId }}/manifest",
 				check = apps.checkInstalled(manifest);
 				console.log(manifest);
 
