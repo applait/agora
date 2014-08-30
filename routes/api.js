@@ -159,6 +159,7 @@ router.get("/apps/:id/package.zip", function (req, res) {
             res.status(404).json({ message: "App not found...", err: err});
         } else {
             if (doc.type && (doc.type === "packaged")) {
+                res.header('Access-Control-Allow-Origin', '*');
                 res.sendFile(agora.config.PACKAGE_STORAGE_PATH + "/" + doc.packagefile);
             } else {
                 res.status(404).json({ message: "App is not a packaged app."});
