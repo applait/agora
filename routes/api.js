@@ -127,6 +127,26 @@ router.get("/apps/:id/manifest", function (req, res) {
     });
 });
 
+
+/**
+ * Provide the package file for a packaged app for download
+ */
+router.get("/apps/:id/package.zip", function (req, res) {
+    apps.findOne({appId: req.params.id}, function (err, doc) {
+
+        if (err || !doc) {
+            res.json(404, { message: "App not found...", err: err});
+        } else {
+            if (doc.type && (doc.type === "packaged")) {
+                res.download(process.env.PWD + "/storage/" + doc.packagefile,
+                             "package.zip");
+            } else {
+                res.json(404, { message: "App is not a packaged app."});
+            }
+        }
+    });
+});
+
 /**
  * Output vital (non-sensitive) information of an app as plain JSON
  */
