@@ -16,16 +16,27 @@
 	if (apps) {
 		$("#installButton").removeAttr("disabled")
 		.click(function (event) {
-			var manifest = location.origin + "/api/apps/{{ appId }}/manifest.webapp",
+			var manifest = "{{ config.SITE_URL }}/api/apps/{{ appId }}/manifest.webapp",
 				check = apps.checkInstalled(manifest);
-				console.log(manifest);
 
 			check.onsuccess = function (event) {
 				if (!check.result) {
+
+					{% if manifest.package_path %}
+					var install = apps.installPackage(manifest);
+					{% else %}
 					var install = apps.install(manifest);
+					{% endif %}
+
+					install.onsuccess = function () {
+						$("#installButton").attr("disabled", "disabled").html("Installed");
+					}
+
 					install.onerror = function () {
 						alert('Installation Failed. Error: ' + this.error.name);
 					}
+				} else {
+					$("#installButton").attr("disabled", "disabled").html("Installed");
 				}
 			}
 		})

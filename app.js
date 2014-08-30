@@ -11,6 +11,10 @@ var express = require("express"),
 
 var app = express();
 
+// Create a globally shared configuration object
+global.agora = {
+    config: config
+}
 
 // Configure template engine
 nunjucks.configure('views', {

@@ -6,6 +6,16 @@ var router = express.Router(),
     apps = db.get("apps");
 
 /**
+ * Clean up tokens and prep up manifest for output
+ */
+var manifest_prepare = function (manifest) {
+    manifest.package_path &&
+        (manifest.package_path = manifest.package_path.replace("{SITE_URL}",
+                                                               agora.config.SITE_URL));
+    return manifest;
+}
+
+/**
  * Endpoint for creating hosted app
  */
 router.post("/apps/create", function (req, res) {
@@ -90,6 +100,16 @@ router.post("/apps/createpackaged", function (req, res) {
                     manifest: {
                         name: appName,
                         description: appDesc,
+                        icons: {
+                           "60": "/assets/img/icon_60.png",
+                           "128": "/assets/img/icon_128.png"
+                        },
+                        developer: {
+                            name: "Applait",
+                            url: "http://applait.io/"
+                        },
+                        default_locale: "en",
+                        package_path: "{SITE_URL}/api/apps/" + appId + "/package.zip"
                     },
                     appId: appId,
                     type: "packaged",
@@ -122,6 +142,7 @@ router.get("/apps/:id/manifest.webapp", function (req, res) {
             res.json(404, { message: "App not found...", err: err});
         } else {
             res.setHeader("Content-Type", "application/x-web-app-manifest+json");
+            doc.manifest = manifest_prepare(doc.manifest);
             res.json(200, doc.manifest);
         }
     });
@@ -133,12 +154,11 @@ router.get("/apps/:id/manifest.webapp", function (req, res) {
  */
 router.get("/apps/:id/package.zip", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
-
         if (err || !doc) {
             res.json(404, { message: "App not found...", err: err});
         } else {
             if (doc.type && (doc.type === "packaged")) {
-                res.download(process.env.PWD + "/storage/" + doc.packagefile,
+                res.download(agora.config.PACKAGE_STORAGE_PATH + "/" + doc.packagefile,
                              "package.zip");
             } else {
                 res.json(404, { message: "App is not a packaged app."});
@@ -152,17 +172,11 @@ router.get("/apps/:id/package.zip", function (req, res) {
  */
 router.get("/apps/:id", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
-        var output;
-
         if (err || !doc) {
             res.json(404, { message: "App not found...", err: err});
         } else {
-            output = {
-                manifest: doc.manifest,
-                type: doc.type,
-                appId: doc.appId
-            };
-            res.end(JSON.stringify(output, 0, 4), "utf-8");
+            doc.manifest = manifest_prepare(doc.manifest);
+            res.end(JSON.stringify(doc.manifest, 0, 4), "utf-8");
         }
     });
 });

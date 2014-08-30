@@ -1,6 +1,7 @@
 var config = {
     REPO_USERNAME : "applait",
     REPO_SLUG     : "agora",
+    APP_ROOT      : __dirname,
     APP_DNS       : process.env.OPENSHIFT_DNS || "localhost:1337",
     APP_IP        : process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
     APP_PORT      : process.env.OPENSHIFT_NODEJS_PORT || "1337",
@@ -9,6 +10,7 @@ var config = {
     DB_USER       : process.env.OPENSHIFT_MONGODB_DB_USERNAME || "",
     DB_PASS       : process.env.OPENSHIFT_MONGODB_DB_PASSWORD || "",
     DB_NAME       : "instanceof",
+    SITE_PROTOCOL : "http://",
 
     endpoint : function (str) {
         return config.APIBASE + str.replace(/\{user\}/, config.REPO_USERNAME).replace(/\{repo\}/, config.REPO_SLUG);
@@ -22,5 +24,8 @@ var config = {
         }
     }
 };
+
+config.SITE_URL = config.SITE_PROTOCOL + config.APP_DNS;
+config.PACKAGE_STORAGE_PATH = config.APP_ROOT + "/storage";
 
 module.exports = config;

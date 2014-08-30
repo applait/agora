@@ -11,6 +11,7 @@ router.get("/", function (req, res) {
 
 router.get("/:id", function (req, res) {
     apps.findOne({ appId: req.params.id}).on("success", function (doc) {
+        doc.config = agora.config;
         res.render("apps/detail.html", doc);
     });
 });
