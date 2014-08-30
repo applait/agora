@@ -115,7 +115,7 @@ router.post("/apps/createpackaged", function (req, res) {
 /**
  * Output only the manifest of an app as "application/x-web-app-manifest+json" content-type
  */
-router.get("/apps/:id/manifest", function (req, res) {
+router.get("/apps/:id/manifest.webapp", function (req, res) {
     apps.findOne({appId: req.params.id}, function (err, doc) {
 
         if (err || !doc) {
