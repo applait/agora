@@ -2,7 +2,7 @@ var config = {
     REPO_USERNAME : "applait",
     REPO_SLUG     : "agora",
     APP_ROOT      : __dirname,
-    APP_DNS       : process.env.OPENSHIFT_DNS || "localhost:1337",
+    APP_DNS       : process.env.OPENSHIFT_APP_DNS || "localhost:1337",
     APP_IP        : process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
     APP_PORT      : process.env.OPENSHIFT_NODEJS_PORT || "1337",
     DB_HOST       : process.env.OPENSHIFT_MONGODB_DB_HOST || "localhost",
