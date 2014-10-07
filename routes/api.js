@@ -1,7 +1,6 @@
 var express = require("express"),
     uuid = require("crypto"),
     db = require("../db"),
-    unzip = require("unzip"),
     path = require("path"),
     fs = require("fs"),
     zip = require("adm-zip");
