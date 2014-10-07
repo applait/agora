@@ -9,21 +9,22 @@ router.get(["/","/index", "/index.html"], function (req, res) {
 
 router.get("/manifest.webapp", function (req, res) {
     var manifest = {
-        name: "Applait",
-        description: "Firefox OS apps, baked and served hot.",
+        name: "Applait Explore",
+        description: "Test drive your Firefox OS apps.",
         launch_path: "/index.html",
         icons: {
-           "60": "/assets/img/icon_60.png",
-           "128": "/assets/img/icon_128.png"
+            "60": "/assets/img/icon_60.png",
+            "128": "/assets/img/icon_128.png"
         },
         developer: {
-        name: "Your name or organization",
-            url: "http://applait.io/"
+            name: "Applait",
+            url: "http://applait.com/"
         },
         default_locale: "en"
-    }
+    };
 
-    res.json(200, manifest);
+    res.setHeader("Content-Type", "application/x-web-app-manifest+json");
+    res.status(200).json(manifest);
 });
 
 module.exports = router;

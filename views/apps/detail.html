@@ -3,44 +3,74 @@
 {% block content %}
 
 <div class="row appDetails">
-	<img src="{{ manifest.icons['128'] }}" class="col-md-2 col-md-offset-2" />
-	<div class="col-lg-4">
-		<h1>{{ manifest.name }}</h1>
-		<p>{{ manifest.description }}</p>
-		<button id="installButton" disabled="disabled" class="btn btn-default btn-block">Install</button>
-	</div>
+  <img id="appicon" src="/assets/img/icon_128.png" class="col-md-2 col-md-offset-2" />
+  <div class="col-lg-4">
+    <h1>{{ manifest.name }}</h1>
+    <p id="authorname"></p>
+    <p>{{ manifest.description }}</p>
+    <button id="installButton" disabled="disabled" class="btn btn-default btn-block">Install</button>
+  </div>
 </div>
 
 <script type="text/javascript">
-	var apps = navigator.apps || navigator.mozApps;
-	if (apps) {
-		$("#installButton").removeAttr("disabled")
-		.click(function (event) {
-			var manifest = "{{ config.SITE_URL }}/api/apps/{{ appId }}/manifest.webapp",
-				check = apps.checkInstalled(manifest);
+ var apps = navigator.apps || navigator.mozApps,
+ installsuccess = function () {
+   console.log("App installed", this.result);
+   $("#installButton").attr("disabled", "disabled").html("Installed");
+ },
+ installerror = function () {
+   console.log("Install failed", this.error);
+   alert('Installation Failed. Error: ' + this.error.name);
+ };
 
-			check.onsuccess = function (event) {
-				if (!check.result) {
+ if (apps) {
+   var baseappurl = "{{ config.SITE_URL }}/api/apps/{{ appId }}";
+   var manifesturl = baseappurl + "/manifest.webapp";
+   var iconurl = baseappurl + "/icon.png";
 
-					{% if manifest.package_path %}
-					var install = apps.installPackage(manifest);
-					{% else %}
-					var install = apps.install(manifest);
-					{% endif %}
+   $.getJSON(manifesturl).done(function (manifest) {
 
-					install.onsuccess = function () {
-						$("#installButton").attr("disabled", "disabled").html("Installed");
-					}
+     var check = apps.checkInstalled(manifesturl);
 
-					install.onerror = function () {
-						alert('Installation Failed. Error: ' + this.error.name);
-					}
-				} else {
-					$("#installButton").attr("disabled", "disabled").html("Installed");
-				}
-			}
-		})
-	}
+     check.onsuccess = function () {
+
+       if (!check.result) {
+
+         {% if manifest.package_path %}
+         $("#appicon").attr('src', iconurl);
+         $("#authorname").append(" - " + manifest.developer.name);
+         $("#installButton").removeAttr('disabled').bind('click', function (evt) {
+           evt.preventDefault();
+
+           var install = apps.installPackage(manifesturl);
+
+           install.onsuccess = installsuccess;
+           install.onerror = installerror;
+         });
+
+         {% else %}
+         $("#installButton").removeAttr('disabled').bind('click', function (evt) {
+           evt.preventDefault();
+
+           var install = apps.install(manifesturl);
+
+           install.onsuccess = installsuccess;
+           install.onerror = installerror;
+         });
+
+         {% endif %}
+
+       } else {
+         $("#installButton").attr("disabled", "disabled").html("Installed");
+       }
+
+     }
+
+   });
+
+
+ }
+
 </script>
 
 {% endblock %}

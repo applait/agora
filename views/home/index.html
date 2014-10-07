@@ -48,26 +48,4 @@
     Life is too short to fire blanks... Please <b class="request-again">fill-up the fields</b>!
 </div>
 
-
-<form id="generator-form-packaged" class="form-horizontal" role="form" enctype="multipart/form-data" action="api/apps/createpackaged" method="POST">
-    <div class="col-sm-6 col-sm-offset-3">
-        <div class="form-group">
-            <label class="sr-only" for="item-app-name">App Name</label>
-            <input type="text" class="" id="item-app-name" placeholder="App Name" name="name"
-                required>
-        </div>
-        <div class="form-group">
-            <label class="sr-only" for="item-app-description">App Description</label>
-            <input type="text" class="" id="item-app-description" placeholder="Short app description" name="description" required>
-        </div>
-        <div class="form-group">
-            <label class="sr-only" for="item-packagefile">Package file (.zip)</label>
-            <input type="file" class="" id="item-packagefile" name="packagefile">
-        </div>
-        <div class="form-group">
-            <input id="generator-submit" class="action-button crossfade" type="submit" value="Create App">
-        </div>
-    </div>
-</form>
-
 {% endblock %}

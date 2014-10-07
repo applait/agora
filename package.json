@@ -1,50 +1,51 @@
 {
-  "name": "applait-agora",
-  "version": "0.0.0",
-  "description": "Marketplace for Applait",
+    "name": "applait-agora",
+    "version": "0.0.0",
+    "description": "Marketplace for Applait",
 
-  "keywords": [
-    "applait",
-    "marketplace",
-    "firefoxos"
-  ],
+    "keywords": [
+        "applait",
+        "marketplace",
+        "firefoxos"
+    ],
 
-  "author": {
-    "name": "Applait",
-    "email": "dev+agora@applait.io",
-    "url":  "http://agora.applait.io/"
-  },
+    "author": {
+        "name": "Applait",
+        "email": "dev+agora@applait.io",
+        "url":  "http://agora.applait.io/"
+    },
 
-  "homepage": "http://agora.applait.io/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/applait/agora"
-  },
+    "homepage": "http://agora.applait.io/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/applait/agora"
+    },
 
-  "engines": {
-    "node": ">= 0.10.0",
-    "npm": ">= 1.3.0"
-  },
+    "engines": {
+        "node": ">= 0.10.0",
+        "npm": ">= 1.3.0"
+    },
 
-  "scripts": {
-    "start": "./app.js"
-  },
+    "scripts": {
+        "start": "./app.js"
+    },
 
-  "dependencies": {
-    "express": "4.8.0",
-    "express-session": "1.2.1",
-    "cookie-parser": "1.1.0",
-    "body-parser": "1.3.1",
-    "passport": "0.2.0",
-    "monk": "0.9.0",
-    "request": "2.36.0",
-    "nunjucks": "1.0.5",
-    "multer": "0.1.4"
-  },
+    "dependencies": {
+        "express": "4.8.0",
+        "express-session": "1.2.1",
+        "cookie-parser": "1.1.0",
+        "body-parser": "1.3.1",
+        "passport": "0.2.0",
+        "monk": "0.9.0",
+        "request": "2.36.0",
+        "nunjucks": "1.0.5",
+        "multer": "0.1.4",
+        "adm-zip": "0.4.4"
+    },
 
-  "devDependencies": {},
-  "bundleDependencies": [],
+    "devDependencies": {},
+    "bundleDependencies": [],
 
-  "private": true,
-  "main": "app.js"
+    "private": true,
+    "main": "app.js"
 }
