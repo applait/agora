@@ -232,7 +232,11 @@ router.get("/apps/:id/icon.png", function (req, res) {
             if (doc.type && (doc.type === "packaged")) {
                 res.header('Access-Control-Allow-Origin', '*');
                 var iconfile = doc.iconfile ? doc.iconfile : doc.packagefile.replace(/\.zip$/i, ".png");
-                res.sendFile(path.join(agora.config.PACKAGE_STORAGE_PATH, iconfile));
+                if (fs.existsSync(iconfile)) {
+                    res.sendFile(path.join(agora.config.PACKAGE_STORAGE_PATH, iconfile));
+                } else {
+                    res.status(404).json({message: "Icon file not found for the app."});
+                }
             } else {
                 res.status(404).json({ message: "App icon not found."});
             }
