@@ -28,49 +28,43 @@
    var manifesturl = baseappurl + "/manifest.webapp";
    var iconurl = baseappurl + "/icon.png";
 
-   $.getJSON(manifesturl).done(function (manifest) {
+   var check = apps.checkInstalled(manifesturl);
 
-     var check = apps.checkInstalled(manifesturl);
+   check.onsuccess = function () {
 
-     check.onsuccess = function () {
+     if (!check.result) {
 
-       if (!check.result) {
+       {% if manifest.package_path %}
+       $("#appicon").attr('src', iconurl);
+       $("#authorname").append(" - {{ manifest.developer.name }}");
+       $("#installButton").removeAttr('disabled').bind('click', function (evt) {
+         evt.preventDefault();
 
-         {% if manifest.package_path %}
-         $("#appicon").attr('src', iconurl);
-         $("#authorname").append(" - " + manifest.developer.name);
-         $("#installButton").removeAttr('disabled').bind('click', function (evt) {
-           evt.preventDefault();
+         var install = apps.installPackage(manifesturl);
 
-           var install = apps.installPackage(manifesturl);
+         install.onsuccess = installsuccess;
+         install.onerror = installerror;
+       });
 
-           install.onsuccess = installsuccess;
-           install.onerror = installerror;
-         });
+       {% else %}
+       $("#installButton").removeAttr('disabled').bind('click', function (evt) {
+         evt.preventDefault();
 
-         {% else %}
-         $("#installButton").removeAttr('disabled').bind('click', function (evt) {
-           evt.preventDefault();
+         var install = apps.install(manifesturl);
 
-           var install = apps.install(manifesturl);
+         install.onsuccess = installsuccess;
+         install.onerror = installerror;
+       });
 
-           install.onsuccess = installsuccess;
-           install.onerror = installerror;
-         });
+       {% endif %}
 
-         {% endif %}
-
-       } else {
-         $("#installButton").attr("disabled", "disabled").html("Installed");
-       }
-
+     } else {
+       $("#installButton").attr("disabled", "disabled").html("Installed");
      }
 
-   });
-
+   };
 
  }
-
 </script>
 
 {% endblock %}
